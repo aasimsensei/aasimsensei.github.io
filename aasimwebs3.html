@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Island+Moments&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+body {
+  font-family: 'Bebas Neue', cursive;
+  margin: 0 auto;
+  max-width: 600px;
+  background: #234545;
+  
+}
+div {
+  height: 300px;
+  background-size: 100% 100%;
+  position: relative;
+  margin: 40px 0 0 0;
+  border-radius: 12px;
+}
+h1 {
+  font-family: 'Island Moments', cursive;
+  text-align: center;
+  font-size: 75px;
+  color: rgba(25,255,255,1);
+  margin: 60px 0 0 0;
+}
+h2 {
+  text-align: center;
+  color: rgba(25,255,255,1);
+  margin: 0px 0 70px 0;
+}
+p {
+  color: rgba(25,255,255,1);
+  background: black;
+  background: linear-gradient(to right, rgba(255,0,0,0), rgba(255,0,0,1));
+  background: -webkit-linear-gradient(bottom, rgba(255,0,0,1), rgba(0,0,0,.4));
+  background: -moz-linear-gradient(bottom, rgba(255,0,0,1), rgba(0,0,0,.4));
+  padding: 10px;
+  line-height: 28px;
+  text-align: justify;
+  position: absolute;
+  bottom: 0;
+  margin: 0;
+  height: 30px;
+  transition: height .5s;
+  -webkit-transition: height .5s;
+  -moz-transition: height .5s;
+}
+
+small {
+  opacity: 0;
+}
+
+.show-description p {
+  height: 150px;
+}
+
+.show-description small {
+  opacity: 1;
+}
+
+.first{
+  background-image: url("https://dinnerthendessert.com/wp-content/uploads/2018/03/Easy-Tandoori-Chicken-1.jpg");
+}
+.second{
+  background-image: url("https://www.kitchensanctuary.com/wp-content/uploads/2021/03/Garlic-Naan-square-FS-42.jpg");
+}
+.dessert{
+  background-image: url("https://www.cookingcarnival.com/wp-content/uploads/2020/06/Rasmalai-500x375.jpg");
+}
+.price {
+  float: right;
+}
+@media (max-width: 500px) {
+  h1 {
+    font-size: 50px;
+    margin-top: 20px;
+    line-height: 40px;
+  }
+  h2 {
+    font-size: 20px;
+    margin: 20px 0 30px 0;
+  }
+  div {
+    margin: 20px 12px 0 12px;
+  }
+  p {
+    font-size: 20px;
+    line-height: 24px;
+  }
+  small {
+    font-size: 16px;
+  }
+  input {
+  	font-size: 22px;
+  }
+  
+}
+
+</style>
+
+</head>
+
+<body>
+<h1>Aasim's Tandoori House</h1>
+<h2>The best in NYC</h2>
+<div class="first">
+	<input type="number" min="0" style="width: 50px" class="quantities">
+  <p>Fresh Tandoori Chicken <span class="price">$25.00</span><br />
+  <small>Coming fresh out of Indian Cuisine, this meal consists of super tasty chicken added with Indian spices on top. An original Indian classic meal.</small></p>
+</div>
+
+<div class="second">
+	<input type="number" min="0" style="width: 50px" class="quantities">
+  <p>Crispy Garlic Naan <span class="price">$7.00</span><br />
+  <small>Straight out the tandoor, naan is a type of roti in which it is baked crispy with garlic sprinkled all over it making it taste extra fresh and crispy!</small></p>
+</div>
+<div class="dessert">
+	<input type="number" min="0" style="width: 50px" class="quantities">
+  <p>Sweet Ras Malai <span class="price">$9.00</span><br />
+  <small>This is one of the most famous deserts in all of Indian Cuisine in which you enjoy something so sweet wih every taste of it. If you come here to eat, its a must to try ras malai.</small></p>
+</div>
+  <br><br>
+  <input id="Name" placeholder="Your Name">
+  <input id="Email" type="email" placeholder="Your email">
+  <input id="submit" type="submit">
+  <br><br>
+  
+  
+<script>
+  $('div').on('click', function() {
+      $(this).toggleClass('show-description');
+  });
+</script>
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js";
+  import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-database.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyCVdseT_kzn-9qS_r76bVGCCChRMY4GzY0",
+    authDomain: "project-3-aasim.firebaseapp.com",
+    projectId: "project-3-aasim",
+    storageBucket: "project-3-aasim.appspot.com",
+    messagingSenderId: "943649657505",
+    appId: "1:943649657505:web:a09187d69d7526298556e0"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+const Name = document.querySelector("#Name")
+  const quantities = document.querySelectorAll(".quantities")  
+const Email = document.querySelector("#Email")
+document.querySelector('#submit').addEventListener('click', Submit)
+const itemsList = ["Fresh Tandoori Chicken", "Crispy Garlic Naan", "Sweet Ras Malai"]
+  const prices = document.querySelectorAll(".price")
+  
+  
+	function Submit() {
+		  const timestamp = buildTimestamp()
+  	  let cart = { }
+	  let total = 0
+
+  	  for  (let i=0; i<quantities.length; i=i+1) {
+  	  	if (quantities[i].value != "0" && quantities[i].value != "") {	
+  	  		cart[itemsList[i]] = parseInt(quantities[i].value) 
+            let price = prices[i].innerHTML.replace('$', '')
+			  total = total + quantities[i].value * price 
+  	  	}
+  	  	quantities[i].value = ""
+  	  }
+	  
+		  set(ref(db, timestamp), {
+			  Name: Name.value,
+		      email: Email.value,
+			  cart: cart,
+              totalPrice: total,
+		      paid: "not yet",
+		  });
+
+		  Name.value = ""
+		  Email.value = ""
+		}
+		function buildTimestamp() {
+			  const now = new Date();
+			  let timestamp = now.getFullYear().toString() + "/";
+			  //const month = now.toLocaleString('default', { month: 'long' });
+
+			  let month = now.getMonth()+1   //add 1 because Javascript uses 0 for January
+			  month = month.toString()
+			  month = addLeadingZero(month)
+			  timestamp += month + "/"; 
+
+			  let date = now.getDate().toString()
+			  date = addLeadingZero(date)
+			  timestamp += date + "/";
+
+			  let hours = now.getHours().toString()
+			  hours = addLeadingZero(hours)
+			  timestamp += hours + ":";
+
+			  let minutes = now.getMinutes().toString()
+			  minutes = addLeadingZero(minutes)
+			  timestamp += minutes + ":";
+
+			  let seconds = now.getSeconds().toString()
+			  seconds = addLeadingZero(seconds)
+			  timestamp += seconds;
+  
+			  return timestamp
+			}
+	
+			function addLeadingZero(units) {
+				if (units.length < 2) {
+					units = "0" + units
+				}
+				return units
+			}
+</script>
+</body>
